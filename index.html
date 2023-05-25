@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Los Mejores amigos, perros y gatos unidos por un fin comun">
+    <title>Colitas Felices</title>
+    <link rel="shortcut icon" href="./favicon.png">
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="https://kit.fontawesome.com/4301b5618d.js" crossorigin="anonymous"></script>
+    <script async>
+        window.onload = async ()=>{
+            spinner.removeAttribute('hidden');
+            const container = document.getElementById('card-container');
+            const traerImagenes = async ( size, limit )=> {
+                const respuesta = await fetch(`https://api.thedogapi.com/v1/breeds?limit=${limit}&page=0`)
+                spinner.setAttribute('hidden', '');
+                return respuesta.json();
+            }
+            const perros = await traerImagenes('small',10)
+            perros.map((perro)=>{
+                const card= `
+                        <div class="card">
+                            <div class="card-img">
+                                <img src="${perro.image.url}" alt="${perro.name}">
+                            </div>
+                            <div class="card-body">
+                                <h3>${perro.name}</h3>
+                                <p><span>Origen: </span> ${perro?.origin || '-'}</p>
+                                <p><span>Criado para: </span>${perro.bred_for}</p>
+                                <p><span>Tiempo de Vida: </span>${perro.life_span}</p>
+                            </div>
+                        </div>` 
+                const cardItem = document.createElement("div");
+                cardItem.className = 'card-item'
+                cardItem.innerHTML = card;
+                container.appendChild(cardItem);
+            })
+        }
+    </script>
+
+</head>
+<!-- ¿Eslogan: uniendo mascotas con sus dueños? -->
+
+<body>
+    <header>
+        <nav class="menu-container">
+            <div class="menu-item">
+                <img class="logo" src="./assets/001-gatito.png" alt="logo">
+            </div>
+            <div class="menu-item">
+                <ul class="menu-lista">
+                    <li class="activo"><a href="./index.html"> Perros y gatos </a></li>
+                    <li><a href="./pages/preguntasFrecuentes.html"> Preguntas frecuentes </a></li>
+                    <li><a href="./pages/requisitosDeAdopcion.html"> Requisitos de adopción </a></li>
+                    <li><a href="./pages/seBusca.html"> Contacto </a></li>
+                    <li><a href="./pages/donaciones.html"> Donaciones </a></li>
+                </ul>
+                <div>
+                    <span class="btn-menu"><i class="fa-solid fa-bars"></i></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <div class="layout">
+                <h2>Perros y gatos en adopción</h2>
+                <div class="card-container" id="card-container">
+                </div>
+            </div>
+            <div hidden id="spinner"></div>
+        </section>
+    </main>
+    <footer>
+        <div>
+            <span>Derechos de Autor &copy; 2022</span>
+        </div>
+        <div>
+            <a title="sobre nosotras" href="./pages/sobreNosotras.html">Sobre nosotras</a>
+        </div>
+    </footer>
+    <script src="/scripts/main.js"></script>
+</body>
+
+</html>
